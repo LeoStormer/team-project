@@ -10,12 +10,19 @@ import rendering.Camera;
 
 public class Project extends Game {
 	private static final long serialVersionUID = 1L;
+	
+	InputReader ir = new InputReader();;
 	public Camera cam;
-	public Rect[] r;
 	public Circle c;
 	public double cameraMoveX = 0;
 	public double cameraMoveY = 0;
 	public double speed = 100;
+	
+	Player boy = new Player(100, 100, 32, 32);
+
+	Rect r1 = new Rect(500, 400, 100, 100);
+	Rect r2 = new Rect(800, 400, 100, 100);
+	
 	
 	public Project() {
 		// TODO Auto-generated constructor stub
@@ -23,41 +30,57 @@ public class Project extends Game {
 		setPreferredSize(new Dimension(1280, 800));
 		setBackground(Color.WHITE);
 		setDoubleBuffered(true);
+		addKeyListener(ir);
 	}
 	
 	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		for (int i = 0; i < r.length; i++) {
-			r[i].draw(g, cam);
-		}
-	}
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
-	
-	@Override
-	public void initialize() {
-		cam = new Camera();
-		c = new Circle(50, 100, 30);
-		r = new Rect[5];
-		for (int i = 0; i < r.length; i++) {
-			r[i] = new Rect(i * 100, i % 2 * 50, 50, 50);
-		}
-	}
+        r1.draw(g, cam);
+        r2.draw(g, cam);
+        boy.draw(g, cam);
+       
+    }
+
+    @Override
+    public void initialize() {
+        cam = new Camera(100, 100, 5, 5);
+    }
+
+    @Override
+    public void processInputState(InputReader inputReader) {
+
+    	boy.physicsOFF();
+    	
+    	/*	
+        if (ir.isKeyPressed(_A)) r1.goLT(5.0);
+        if (ir.isKeyPressed(_D)) r1.goRT(5.0);
+        if (ir.isKeyPressed(_W)) r1.goUP(5.0);
+        if (ir.isKeyPressed(_S)) r1.goDN(5.0);
+        */
+    	
+    	boy.handleInput(inputReader);
+
+        boy.move();
+    }
+
+    @Override
+    public void gameLoop(double deltaTime) {
+        boy.update(deltaTime);
+        handleCollisions();
+    }
 
 
-	@Override
-	public void processInputState(InputReader inputReader) {
-		cameraMoveX = inputReader.isKeyPressed(_A) ? -1 : 0;
-		cameraMoveX += inputReader.isKeyPressed(_D) ? 1 : 0;
-		cameraMoveY = inputReader.isKeyPressed(_W) ? -1 : 0;
-		cameraMoveY += inputReader.isKeyPressed(_S) ? 1 : 0;
-	}
-
-
-	@Override
-	public void gameLoop(double deltaTime) {
-//		System.out.println(deltaTime);
-		cam.setPosition(cam.getPosition().add(cameraMoveX * speed * deltaTime, cameraMoveY * speed * deltaTime));
-//		r[1].setPosition(r[1].getPosition().add(cameraMoveX, cameraMoveY));
-	}
+    private void handleCollisions() {
+    
+    	if(boy.intersects(r1)) {
+    	   boy.pushedOutOf(r1);
+    	}
+    	
+    	if(boy.intersects(r2)) {
+     	   boy.pushedOutOf(r2);
+     	}
+    	
+    }
 }

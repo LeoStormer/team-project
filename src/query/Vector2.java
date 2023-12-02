@@ -56,4 +56,12 @@ public class Vector2 {
 		double divisor = number.doubleValue();
 		return new Vector2(x / divisor, y / divisor);
 	}
+
+	public void setX(double x) {
+		this.x = x;
+	}
+	
+	public void setY(double y) {
+		this.y = x;
+	}
 }
