@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JPanel;
@@ -79,6 +81,11 @@ public abstract class Game extends JPanel implements Runnable{
 	
 	public void init()
 	{
+		setPreferredSize(new Dimension(1280, 800));
+		setSize(getPreferredSize());
+		setBackground(Color.WHITE);
+		setDoubleBuffered(true);
+		
 		inputReader = new InputReader();
 		setFocusable(true);
 		
