@@ -7,6 +7,7 @@ import query.Circle;
 import query.Physics;
 import query.Rect;
 import rendering.Camera;
+import tiles.TileMap;
 
 public class Project extends Game {
 	private static final long serialVersionUID = 1L;
@@ -22,6 +23,8 @@ public class Project extends Game {
 	public static int numTilesX = 200;
 	public static int numTilesY = 200;
 	public static int tileSize = 128;
+	
+	TileMap tilemap;
 
 	public Project() {
 		init();
@@ -30,13 +33,16 @@ public class Project extends Game {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-
+		
+		//tilemap.draw(g, cam);	// Displays 10x10 map from map.map file
 		physics.draw(g, cam);
 	}
 
 	
 	@Override
 	public void initialize() {
+		tilemap = new TileMap("src/map.map", tileSize);
+		
 		Dimension size = getSize();
 		cam = new Camera(size.width * -0.5, size.height * -0.5, size.width, size.height);
 		int worldWidth = numTilesX * tileSize;
