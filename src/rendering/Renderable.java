@@ -41,6 +41,13 @@ public abstract class Renderable implements Drawable {
      */
     public abstract void draw(Graphics g, int x, int y, int w, int h);
 
+    /**
+     * Draws a scaled version of the renderable at the specified location of the screen.
+     * @param g the Graphics object to draw with
+     * @param x the x-coordinate in screen space
+     * @param y the y-coordinate in screen space
+     * @param scale the amount to scale by
+     */
     public void draw(Graphics g, int x, int y, int scale) {
         int w = getWidth() * scale;
         int h = getHeight() * scale;
