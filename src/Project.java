@@ -1,7 +1,12 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import game.Game;
 import game.InputReader;
@@ -12,6 +17,7 @@ import rendering.Animation;
 import rendering.Animator;
 import rendering.Camera;
 import rendering.TileAtlas;
+import rendering.TileMap;
 
 public class Project extends Game {
 	private static final long serialVersionUID = 1L;
@@ -30,6 +36,10 @@ public class Project extends Game {
 	public ArrayList<Animation> tileViewer;
 	public int currentAnimation = 0;
 	public Animator animator = new Animator();
+	
+	public TileAtlas tileAtlas;
+    public TileMap tilemap;
+    public int scale = 3; // Scale for tilemap
 
 	public Project() {
 		init();
@@ -40,8 +50,9 @@ public class Project extends Game {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		// animator.draw(g, cam);
-		animator.draw(g, 0,0,8);
-		// physics.draw(g, cam);
+		// animator.draw(g, 0,0,8);
+		physics.draw(g, cam);
+		tilemap.draw(g, cam);
 
 	}
 
@@ -71,7 +82,7 @@ public class Project extends Game {
 		// 	c[i] = new Circle(x, y, 50);
 		// }
 
-		// r = new Rect[5000];
+		//r = new Rect[5000];
 		// for (int i = 0; i < r.length; i++) {
 		// 	double flipSign = Math.random() < 0.5 ? -1 : 1;
 		// 	double randomNumber = Math.random() * halfWidth;
@@ -84,8 +95,8 @@ public class Project extends Game {
 		// }
 
 		// c[0].setPosition(0, 0);
-		// r[0].setPosition(0, 0);
-
+		//r[0].setPosition(0, 0);
+		
 		// c[1].setAnchored(true);;
 		// c[1].setPosition(100,0);
 		// r[1].setAnchored(true);;
@@ -94,7 +105,7 @@ public class Project extends Game {
 		// physics.addColliders(r);
 		// physics.addColliders(c);
 
-		// Testing: View Assets
+		/* Testing: View Assets
 		for (TileAtlas atlas : AssetPool.getObjectAtlases()){
 			tileViewer.add(new Animation(atlas.getTiles(), 5));
 		}
@@ -108,7 +119,32 @@ public class Project extends Game {
 		}
 
 		animator.play(tileViewer.get(currentAnimation));
+		*/
+		
+		 try {
+	            BufferedImage grounds = ImageIO.read(new File("res/sprites/landscape/FG_Grounds.png"));
+	            
+	            //First sample area
+	            Rect grass = new Rect(96, 192, 90, 48);
+
+	            // Second sample area
+	            Rect dirt = new Rect(96, 576, 90, 48);
+
+	            // Create TileAtlas with both sample areas
+	            int[][] tileDimensions = {
+	                    {16, 16, 0}, // Specify the tile dimensions and spacing for sampleArea1
+	                    {16, 16, 0}  // Specify the tile dimensions and spacing for sampleArea2
+	            };
+	            
+	            tileAtlas = new TileAtlas(grounds, new Rect[]{grass, dirt}, tileDimensions);
+		 }	catch(IOException e) {e.printStackTrace();}
+		
+	            System.out.println(tileAtlas.getNumTiles());
+
+	            // You need to adjust code based on how many tiles. The num of tiles is printed to the console.
+	            tilemap = new TileMap("map.map", tileAtlas, 16 * scale, "abcdefghijklmnopqrstuvwxyzABCD", cam);
 	}
+	
 
 
 	@Override
@@ -117,24 +153,31 @@ public class Project extends Game {
 		objectMoveX += inputReader.isKeyPressed(_D) ? 1 : 0;
 		objectMoveY = inputReader.isKeyPressed(_W) ? -1 : 0;
 		objectMoveY += inputReader.isKeyPressed(_S) ? 1 : 0;
-		cameraMoveX = inputReader.isKeyPressed(LT) ? -1 : 0;
-		cameraMoveX += inputReader.isKeyPressed(RT) ? 1 : 0;
-		cameraMoveY = inputReader.isKeyPressed(UP) ? -1 : 0;
-		cameraMoveY += inputReader.isKeyPressed(DN) ? 1 : 0;
+		cameraMoveX = inputReader.isKeyPressed(LT) ? -3 : 0;
+		cameraMoveX += inputReader.isKeyPressed(RT) ? 3 : 0;
+		cameraMoveY = inputReader.isKeyPressed(UP) ? -3 : 0;
+		cameraMoveY += inputReader.isKeyPressed(DN) ? 3 : 0;
 	}
 
 
 	@Override
 	public void gameLoop(double deltaTime) {
 		cam.setPosition(cam.getPosition().add(cameraMoveX * speed * deltaTime, cameraMoveY * speed * deltaTime));
-		// r[0].setVelocity(objectMoveX * speed, objectMoveY * speed);
+		System.out.println("cameraMoveX: " + cameraMoveX + ", cameraMoveY: " + cameraMoveY);
+
+		//r[0].setVelocity(objectMoveX * speed, objectMoveY * speed);
 		// c[0].setVelocity(objectMoveX * speed, objectMoveY * speed);
+		/*
 		if (!animator.playing) {
 			currentAnimation = (currentAnimation + 1) % tileViewer.size();
 			animator.play(tileViewer.get(currentAnimation));
 		}
 
 		animator.update(deltaTime);
-		// physics.update(deltaTime);
+		*/
+		
+		//physics.update(deltaTime);
 	}
+	
+	
 }
