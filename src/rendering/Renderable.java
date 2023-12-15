@@ -13,6 +13,11 @@ public abstract class Renderable implements Drawable {
      */
     public int zIndex = 0;
 
+
+    public void update(double deltaTime) {
+        
+    }
+    
     /**
      * Draw the renderable at the top left corner of the screen.
      * @param g the Graphics object to draw with

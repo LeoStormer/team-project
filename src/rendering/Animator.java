@@ -59,6 +59,7 @@ public class Animator extends Renderable {
         playing = false;
     }
 
+    @Override
     public void update(double deltaTime) {
         if (!playing || animation == null)
             return;

@@ -7,15 +7,12 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import query.Rect;
-import query.Vector2;
-
 /**
  * A class that splits an image into multiple {@link Tile Tiles}.
  */
 public class TileAtlas extends Tile {
     private ArrayList<Tile> tiles;
-
+    public int numTilesX, numTilesY;
     /**
      * Loads the image at the given file path.
      * Splits the image into many smaller sub images.
@@ -42,8 +39,10 @@ public class TileAtlas extends Tile {
         super(image);
         int rowIncrement = tileHeight + spacing;
         int columnIncrement = tileWidth + spacing;
-        int maxRows = height / rowIncrement;
-        int maxCols = width / columnIncrement;
+        int maxRows = Math.floorDiv(height, rowIncrement);
+        int maxCols = Math.floorDiv(width, columnIncrement);
+        numTilesY = maxRows;
+        numTilesX = maxCols;
         tiles = new ArrayList<>();
 
         sample(image, tileWidth, tileHeight, maxRows, maxCols, rowIncrement, columnIncrement);
@@ -77,8 +76,10 @@ public class TileAtlas extends Tile {
         super(image);
         int rowIncrement = tileHeight + spacing;
         int columnIncrement = tileWidth + spacing;
-        int maxRows = height / rowIncrement;
-        int maxCols = width / columnIncrement;
+        int maxRows = Math.floorDiv(height, rowIncrement);
+        int maxCols = Math.floorDiv(width, columnIncrement);
+        numTilesX = maxCols;
+        numTilesY = maxRows;
         tiles = new ArrayList<>();
 
         for (int row = 0; row < maxRows; row++) {
@@ -99,9 +100,9 @@ public class TileAtlas extends Tile {
      * @param tileDimensions a 2d array of the form {{tileWidth, tileHeight, spacing}, ...} defining tile dimensions per sample area
      * @throws IOException if an I/O error occurs
      */
-    public TileAtlas(String filepath, Rect[] sampleAreas, int[][] tileDimensions) throws IOException {
-        this(ImageIO.read(new File(filepath)), sampleAreas, tileDimensions);
-    }
+    // public TileAtlas(String filepath, Rect[] sampleAreas, int[][] tileDimensions) throws IOException {
+    //     this(ImageIO.read(new File(filepath)), sampleAreas, tileDimensions);
+    // }
     
     /**
      * Divides the image into a set of areas which will be sampled individually to create the TileAtlas. 
@@ -109,34 +110,31 @@ public class TileAtlas extends Tile {
      * @param sampleAreas an array of {@link Rect Rects} defining areas of the input image to sample
      * @param tileDimensions a 2d array of the form {{tileWidth, tileHeight, spacing}, ...} defining tile dimensions per sample area
      */
-    public TileAtlas(BufferedImage image, Rect[] sampleAreas, int[][] tileDimensions) throws IOException {
-        super(image);
-        tiles = new ArrayList<>();
+    // public TileAtlas(BufferedImage image, Rect[] sampleAreas, int[][] tileDimensions) {
+    //     super(image);
+    //     tiles = new ArrayList<>();
 
-        for (int i = 0; i < sampleAreas.length; i++) {
-            Rect sampleArea = sampleAreas[i];
-            Vector2 topLeft = sampleArea.getPosition();
-            Vector2 sheetSize = sampleArea.getSize();
-            int sheetWidth = (int) sheetSize.getX();
-            int sheetHeight = (int) sheetSize.getY();
-            int tileWidth = tileDimensions[i][0];
-            int tileHeight = tileDimensions[i][1];
-            int spacing = tileDimensions[i][2];
-            int columnIncrement = tileWidth + spacing;
-            int rowIncrement = tileHeight + spacing;
-            int maxRows = sheetHeight / rowIncrement;
-            int maxCols = sheetWidth / columnIncrement;
+    //     for (int i = 0; i < sampleAreas.length; i++) {
+    //         Rect sampleArea = sampleAreas[i];
+    //         int tileWidth = tileDimensions[i][0];
+    //         int tileHeight = tileDimensions[i][1];
+    //         int spacing = tileDimensions[i][2];
+    //         int columnIncrement = tileWidth + spacing;
+    //         int rowIncrement = tileHeight + spacing;
+    //         int maxRows = sampleArea.getHeight() / rowIncrement;
+    //         int maxCols = sampleArea.getWidth() / columnIncrement;
 
-            BufferedImage subAtlas = image.getSubimage(
-                (int) topLeft.getX(),
-                (int) topLeft.getY(),
-                sheetWidth,
-                sheetHeight
-            );
+    //         BufferedImage subAtlas = image.getSubimage(
+    //                 sampleArea.getX(),
+    //                 sampleArea.getY(),
+    //                 sampleArea.getWidth(),
+    //                 sampleArea.getHeight()
+    //         );
 
-            sample(subAtlas, tileWidth, tileHeight, maxRows, maxCols, rowIncrement, columnIncrement);
-        }
-    }
+    //         sample(subAtlas, tileWidth, tileHeight, maxRows, maxCols, rowIncrement, columnIncrement);
+    //     }
+    // }
+
 
     /**
      * Samples a rectangular area of the given image.
