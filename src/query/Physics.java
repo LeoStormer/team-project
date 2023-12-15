@@ -41,6 +41,13 @@ public class Physics implements Drawable {
         }
     }
 
+    public Physics(double fixedUpdateInterval, double worldWidth, double worldHeight, int gridCellSize) {
+        this.colliders = new ArrayList<>();
+        this.movementInfo = new HashMap<>();
+        this.grid = new Grid(0, 0, (int) worldWidth, (int) worldHeight, gridCellSize);
+        this.fixedUpdateInterval = fixedUpdateInterval;
+    }
+    
     public Physics(double fixedUpdateInterval, double worldCenterX, double worldCenterY, double worldWidth, double worldHeight, int gridCellSize) {
         this.colliders = new ArrayList<>();
         this.movementInfo = new HashMap<>();
@@ -62,6 +69,8 @@ public class Physics implements Drawable {
 
     public void removeCollider(Collider collider) {
         colliders.remove(collider);
+        movementInfo.remove(collider);
+        grid.remove(collider);
     }
 
     public void update(double deltaTime) {

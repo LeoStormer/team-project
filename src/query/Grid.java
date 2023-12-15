@@ -110,8 +110,8 @@ public class Grid implements Drawable {
     public CellLocation getCellLocation(int px, int py) {
         int offsetX = px - x;
         int offsetY = py - y;
-        int cellX = EMath.clamp(offsetX / cellSize, 0, this.numCellsX - 1);
-        int cellY = EMath.clamp(offsetY / cellSize, 0, this.numCellsY - 1);
+        int cellX = EMath.clamp(Math.floorDiv(offsetX, cellSize), 0, this.numCellsX - 1);
+        int cellY = EMath.clamp(Math.floorDiv(offsetY, cellSize), 0, this.numCellsY - 1);
         
         return new CellLocation(cellX, cellY);
     }
