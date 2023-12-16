@@ -13,11 +13,25 @@ public abstract class Renderable implements Drawable {
      */
     public int zIndex = 0;
 
+    /**
+     * Determines the draw order among renderables with equivalent zIndex.
+     * Renderables with a lower yIndex will be drawn first.
+     */
+    public double yIndex = 0;
 
     public void update(double deltaTime) {
         
     }
     
+    /**
+     * Checks if the camera can see this renderable and if it should be drawn.
+     * @param cam the camera we are checking against.
+     * @return
+     */
+    public boolean shouldDraw(Camera cam) {
+        return true;
+    }
+
     /**
      * Draw the renderable at the top left corner of the screen.
      * @param g the Graphics object to draw with
@@ -66,9 +80,17 @@ public abstract class Renderable implements Drawable {
         return zIndex;
     }
 
+    /**
+     * @return {@link #yIndex yIndex}
+     */
+    public double getyIndex() {
+        return yIndex;
+    }
+
     public abstract int getWidth();
 
     public abstract int getHeight();
+
     /**
      * Sets the {@link #zIndex zIndex} of the renderable.
      * @param zIndex
@@ -77,4 +99,11 @@ public abstract class Renderable implements Drawable {
         this.zIndex = zIndex;
     }
 
+    /**
+     * Sets the {@link #yIndex yIndex} of the renderable.
+     * @param yIndex
+     */
+    public void setyIndex(double yIndex) {
+        this.yIndex = yIndex;
+    }
 }
