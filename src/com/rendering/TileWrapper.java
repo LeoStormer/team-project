@@ -30,7 +30,9 @@ public class TileWrapper extends Renderable {
         this.width = width;
         this.height = height;
         this.x = x;
-        setY(y);
+        this.y = y;
+        this.border = new Rect(x, y, width, height);
+        setyIndex(y + height);
     }
 
     
