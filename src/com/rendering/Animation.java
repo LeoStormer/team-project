@@ -17,6 +17,14 @@ public class Animation {
     public boolean looped;
     private Frame[] frames;
 
+    public Animation(TileAtlas atlas, int[] spriteIndices, double animationDuration){
+        this(atlas.getTiles(spriteIndices), animationDuration, false);
+    }
+
+    public Animation(TileAtlas atlas, int[] spriteIndices, double animationDuration, boolean looped){
+        this(atlas.getTiles(spriteIndices), animationDuration, looped);
+    }
+
     public Animation(Tile[] tiles, double animationDuration) {
         this(tiles, animationDuration, false);
     }

@@ -177,4 +177,14 @@ public class TileAtlas extends Tile {
     public int getNumTiles() {
         return tiles.size();
     }
+
+    public Tile[] getTiles(int[] indices) {
+        Tile[] tilesToReturn = new Tile[indices.length];
+        for (int i = 0; i < tilesToReturn.length; i++) {
+            tilesToReturn[i] = getTile(indices[i]);
+        }
+
+        return tilesToReturn;
+    }
+    
 }
