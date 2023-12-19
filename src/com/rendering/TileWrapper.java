@@ -27,11 +27,10 @@ public class TileWrapper extends Renderable {
     
     public TileWrapper(Tile tile, int x, int y, int width, int height) {
         this.tile = tile;
-        this.x = x;
-        this.y = y;
         this.width = width;
         this.height = height;
-        this.border = new Rect(x, y, width, height);
+        this.x = x;
+        setY(y);
     }
 
     
@@ -82,15 +81,14 @@ public class TileWrapper extends Renderable {
     public void setY(int y) {
         this.y = y;
         border.setPosition(x, y);
-        setyIndex(y);
+        setyIndex(y + getHeight());
     }
 
     public void setPosition(int x, int y) {
         this.x = x;
-        this.y = y;
-        border.setPosition(x, y);
-        setyIndex(y);
+        setY(y);
     }
+
     public void setWidth(int width) {
         this.width = width;
         border.setSize(width, height);
