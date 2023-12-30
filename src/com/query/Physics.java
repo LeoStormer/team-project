@@ -124,9 +124,11 @@ public class Physics implements Drawable {
         // Do narrow phase to determine actual collisions.
         for (CollisionEntry entry : collisionEntries) {
             Vector2 position = entry.collider.getPosition();
+            Vector2 displacement = position.subtract(movementInfo.get(entry.collider).oldPosition);
+
             Arrays.sort(entry.collisions, (Collider c1, Collider c2) -> {
-                double squareMag1 = c1.getPosition().subtract(position).getMagnitudeSquared();
-                double squareMmag2 = c2.getPosition().subtract(position).getMagnitudeSquared();
+                double squareMag1 = Vector2.dotProduct(displacement, c1.getPosition().subtract(position));
+                double squareMmag2 = Vector2.dotProduct(displacement, c2.getPosition().subtract(position));
                 return Double.compare(squareMag1, squareMmag2);
             });
 
