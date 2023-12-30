@@ -3,7 +3,9 @@ package com.tilemap;
 // import java.awt.Graphics;
 
 public class CollisionLayer extends Layer {
-    boolean[][] collisionData;
+
+    private boolean[][] collisionData;
+
     public CollisionLayer(int numRows, int numCols) {
         super(numRows, numCols);
         collisionData = new boolean[numRows][numCols];
@@ -23,20 +25,4 @@ public class CollisionLayer extends Layer {
         setCollisionData(row, col, isCollidable);
     }
 
-    // @Override
-    // protected void draw(Graphics g, int row, int col, int tileWidth, int tileHeight) {
-    //     boolean collidable = isCollidable(row, col);
-        
-    //     if (!collidable) {
-    //         return;
-    //     }
-        
-    //     int x = col * tileWidth - Camera.x;
-    //     int y = row * tileHeight - Camera.y;
-
-    //     g.drawRect(x, y, tileWidth, tileHeight);
-    // }
-
-    
-    
 }

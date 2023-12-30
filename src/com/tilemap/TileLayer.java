@@ -3,10 +3,13 @@ package com.tilemap;
 import com.rendering.Tile;
 
 public class TileLayer extends Layer {
-    public int type = 0;
+
     private Tile[][] tileGrid;
+
     private TileParser tileParser;
-    
+
+    public int type = 0;
+
     public TileLayer(int numRows, int numCols, TileParser tileParser) {
         super(numRows, numCols);
         this.tileParser = tileParser;
@@ -27,16 +30,4 @@ public class TileLayer extends Layer {
         setTile(row, col, tile);
     }
 
-    // @Override
-    // protected void draw(Graphics g, int row, int col, int tileWidth, int tileHeight) {
-    //     Tile tile = getTile(row, col);
-        
-    //     if (tile == null) {
-    //         return;
-    //     }
-        
-    //     int x = col * tileWidth - Camera.x;
-    //     int y = row * tileHeight - Camera.y;
-    //     tile.draw(g, x, y, tileWidth, tileHeight);
-    // }
 }

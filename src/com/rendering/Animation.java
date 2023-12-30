@@ -1,7 +1,9 @@
 package com.rendering;
 
 public class Animation {
+
     public class Frame {
+
         public Tile tile;
         public double delay;
 
@@ -9,19 +11,21 @@ public class Animation {
             this.tile = tile;
             this.delay = delay;
         }
+
     }
+
+    private Frame[] frames;
 
     /**
      * Determins whether an {@link Animator} will loop an Animation.
      */
     public boolean looped;
-    private Frame[] frames;
 
-    public Animation(TileAtlas atlas, int[] spriteIndices, double animationDuration){
+    public Animation(TileAtlas atlas, int[] spriteIndices, double animationDuration) {
         this(atlas.getTiles(spriteIndices), animationDuration, false);
     }
 
-    public Animation(TileAtlas atlas, int[] spriteIndices, double animationDuration, boolean looped){
+    public Animation(TileAtlas atlas, int[] spriteIndices, double animationDuration, boolean looped) {
         this(atlas.getTiles(spriteIndices), animationDuration, looped);
     }
 
@@ -31,6 +35,7 @@ public class Animation {
 
     /**
      * Constructs an Animation where each frame
+     * 
      * @param tiles
      * @param animationDuration
      * @param looped
@@ -41,7 +46,7 @@ public class Animation {
 
         for (int i = 0; i < tiles.length; i++)
             frames[i] = new Frame(tiles[i], frameDelay);
-        
+
         this.looped = looped;
     }
 
@@ -80,10 +85,11 @@ public class Animation {
 
     /**
      * Sets the value of {@link #looped}
+     * 
      * @param looped
      */
     public void setLooped(boolean looped) {
         this.looped = looped;
     }
-    
+
 }

@@ -1,6 +1,7 @@
 package com.query;
 
 public class Node {
+
     public Collider collider;
     protected CellLocation startCellLocation;
     protected CellLocation endCellLocation;
@@ -18,4 +19,5 @@ public class Node {
     public void setEndCellLocation(CellLocation endCellLocation) {
         this.endCellLocation = endCellLocation;
     }
+
 }

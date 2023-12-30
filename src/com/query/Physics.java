@@ -1,6 +1,7 @@
 package com.query;
 
 import java.awt.Graphics;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import com.rendering.Camera;
 import com.rendering.Drawable;
 
 public class Physics implements Drawable {
+
     public ArrayList<Collider> colliders;
     public HashMap<Collider, MovementInfo> movementInfo;
     public Grid grid;
@@ -155,4 +157,5 @@ public class Physics implements Drawable {
             collider.draw(g, cam);
         }
     }
+
 }

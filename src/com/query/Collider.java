@@ -6,6 +6,7 @@ import com.rendering.Camera;
 import com.rendering.Drawable;
 
 public abstract class Collider implements Drawable {
+
     public Vector2 position; // Top left corner of the collider
     public Vector2 size;
     public Vector2 velocity;
@@ -67,7 +68,7 @@ public abstract class Collider implements Drawable {
             newPositions = CollisionResolver.resolveCollision(rect.getPosition(), rect.getSize(), rect.anchored,
                     circle.getPosition(), circle.getSize().getX() * 0.5, circle.anchored);
 
-            // returns rect's newpPosition in newPosition[0], 
+            // returns rect's newpPosition in newPosition[0],
             // so if (this) is a circle, swap them.
             if (type == Type.Circle) {
                 Vector2 temp = newPositions[0];
@@ -151,4 +152,5 @@ public abstract class Collider implements Drawable {
     public Vector2 getCenter() {
         return position.add(size.scale(0.5d));
     }
+
 }

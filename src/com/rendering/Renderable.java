@@ -20,11 +20,12 @@ public abstract class Renderable implements Drawable {
     public double yIndex = 0;
 
     public void update(double deltaTime) {
-        
+
     }
-    
+
     /**
      * Checks if the camera can see this renderable and if it should be drawn.
+     * 
      * @param cam the camera we are checking against.
      * @return
      */
@@ -34,7 +35,8 @@ public abstract class Renderable implements Drawable {
 
     /**
      * Draw the renderable at the top left corner of the screen.
-     * @param g the Graphics object to draw with
+     * 
+     * @param g   the Graphics object to draw with
      * @param cam the {@link Camera} object
      */
     @Override
@@ -44,6 +46,7 @@ public abstract class Renderable implements Drawable {
 
     /**
      * Draws the renderable at the specified location of the screen.
+     * 
      * @param g the Graphics object to draw with
      * @param x the x-coordinate in screen space
      * @param y the y-coordinate in screen space
@@ -51,7 +54,9 @@ public abstract class Renderable implements Drawable {
     public abstract void draw(Graphics g, int x, int y);
 
     /**
-     * Draws the renderable at the specified location of the screen scaled to width w and height h.
+     * Draws the renderable at the specified location of the screen scaled to width
+     * w and height h.
+     * 
      * @param g the Graphics object to draw with
      * @param x the x-coordinate in screen space
      * @param y the y-coordinate in screen space
@@ -61,10 +66,12 @@ public abstract class Renderable implements Drawable {
     public abstract void draw(Graphics g, int x, int y, int w, int h);
 
     /**
-     * Draws a scaled version of the renderable at the specified location of the screen.
-     * @param g the Graphics object to draw with
-     * @param x the x-coordinate in screen space
-     * @param y the y-coordinate in screen space
+     * Draws a scaled version of the renderable at the specified location of the
+     * screen.
+     * 
+     * @param g     the Graphics object to draw with
+     * @param x     the x-coordinate in screen space
+     * @param y     the y-coordinate in screen space
      * @param scale the amount to scale by
      */
     public void draw(Graphics g, int x, int y, int scale) {
@@ -93,6 +100,7 @@ public abstract class Renderable implements Drawable {
 
     /**
      * Sets the {@link #zIndex zIndex} of the renderable.
+     * 
      * @param zIndex
      */
     public void setzIndex(int zIndex) {
@@ -101,9 +109,11 @@ public abstract class Renderable implements Drawable {
 
     /**
      * Sets the {@link #yIndex yIndex} of the renderable.
+     * 
      * @param yIndex
      */
     public void setyIndex(double yIndex) {
         this.yIndex = yIndex;
     }
+
 }

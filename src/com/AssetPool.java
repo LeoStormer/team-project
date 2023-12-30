@@ -11,10 +11,15 @@ import com.rendering.TileAtlas;
  * should be obtained from this class.
  */
 public final class AssetPool {
+
     private static TileAtlas[] entityAtlases;
+
     private static TileAtlas[] objectAtlases;
+
     private static TileAtlas[] landscapeAtlases;
+
     private static AnimationSet[] animationSets;
+
     private static boolean loaded = false;
 
     public static void load() {
@@ -71,21 +76,21 @@ public final class AssetPool {
      * Create entity animation sets
      */
     private static void createAnimationSets() {
-        int[] walkDown = {0, 1, 2, 3};
-        int[] walkLeft = {16,17,18,19};
-        int[] walkRight = {32,33,34,35};
-        int[] walkUp = {48,49,50,51}; 
+        int[] walkDown = { 0, 1, 2, 3 };
+        int[] walkLeft = { 16, 17, 18, 19 };
+        int[] walkRight = { 32, 33, 34, 35 };
+        int[] walkUp = { 48, 49, 50, 51 };
 
-        int[] swordDown = {4,5,6,7};
-        int[] swordLeft = {20,21,22,23};
-        int[] swordRight = {36,37,38,39};
-        int[] swordUp = {52,53,54,55};
+        int[] swordDown = { 4, 5, 6, 7 };
+        int[] swordLeft = { 20, 21, 22, 23 };
+        int[] swordRight = { 36, 37, 38, 39 };
+        int[] swordUp = { 52, 53, 54, 55 };
 
-        int[] axeDown = {8,9,10,11};
-        int[] axeLeft = {24,25,26,27};
-        int[] axeRight = {40,41,42,43};
-        int[] axeUp = {56,57,58,59};
-        int[] dead = {64,65,66,67};
+        int[] axeDown = { 8, 9, 10, 11 };
+        int[] axeLeft = { 24, 25, 26, 27 };
+        int[] axeRight = { 40, 41, 42, 43 };
+        int[] axeUp = { 56, 57, 58, 59 };
+        int[] dead = { 64, 65, 66, 67 };
 
         for (int i = 0; i < entityAtlases.length; i++) {
             TileAtlas atlas = entityAtlases[i];
@@ -106,7 +111,7 @@ public final class AssetPool {
             animSet.addAnimation("axeUp", new Animation(atlas, axeUp, 0.5d));
 
             animSet.addAnimation("dead", new Animation(atlas, dead, 0.5, true));
-            
+
             animationSets[i] = animSet;
         }
     }
@@ -146,4 +151,5 @@ public final class AssetPool {
     public static boolean isLoaded() {
         return loaded;
     }
+
 }

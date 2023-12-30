@@ -3,7 +3,7 @@ package com.rendering;
 import java.util.HashMap;
 
 public class AnimationSet {
-    
+
     HashMap<String, Animation> animations;
 
     public AnimationSet() {

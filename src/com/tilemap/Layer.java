@@ -3,8 +3,11 @@ package com.tilemap;
 // import java.awt.Graphics;
 
 public abstract class Layer {
-    public boolean contentVisible;
+
     private int[][] serializedGrid;
+
+    public boolean contentVisible;
+
     public final int numRows, numCols;
 
     public Layer(int numRows, int numCols) {
@@ -13,7 +16,7 @@ public abstract class Layer {
         contentVisible = true;
         serializedGrid = new int[numRows][numCols];
     }
-    
+
     public int getSerialized(int row, int col) {
         return serializedGrid[row][col];
     }
@@ -26,26 +29,19 @@ public abstract class Layer {
     public boolean isContentVisible() {
         return contentVisible;
     }
-    
+
     public void setContentVisible(boolean contentVisible) {
         this.contentVisible = contentVisible;
     }
 
-    // public void draw(Graphics g, int startRow, int startCol, int endRow, int endCol, int tileWidth, int tileHeight) {
-    //     for (int row = startRow; row < endRow; row++) {
-    //         for (int col = startCol; col < endCol; col++) {
-    //             draw(g, row, col, tileWidth, tileHeight);
-    //         }
-    //     }
-    // };
-
     public int getNumRows() {
         return numRows;
     }
-    
+
     public int getNumCols() {
         return numCols;
     }
+
     public abstract void update(int row, int col, int code);
-    // protected abstract void draw(Graphics g, int row, int col, int tileWidth, int tileHeight);
+
 }

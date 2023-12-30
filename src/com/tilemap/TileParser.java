@@ -4,20 +4,29 @@ import com.rendering.Tile;
 import com.rendering.TileAtlas;
 
 public class TileParser {
+
     private static final double inverseLog2 = 1.0 / Math.log(2);
+
     private static int getNecessayBits(int value) {
         double logValue = Math.log(value);
         return (int) Math.ceil(logValue * inverseLog2);
-    } 
+    }
+
+    private int tileBits;
+
+    private int tileMask;
+
+    private int atlasBits;
+
+    private int atlasMask;
+
+    private String formatString;
+
+    public int invalidTileIndex;
+
+    public int invalidAtlasIndex;
 
     public TileAtlas[] tileAtlases;
-    private int tileBits;
-    private int tileMask;
-    private int atlasBits;
-    private int atlasMask;
-    private String formatString;
-    public int invalidTileIndex;
-    public int invalidAtlasIndex;
 
     public TileParser(TileAtlas[] atlases) {
         tileAtlases = atlases;
@@ -34,7 +43,7 @@ public class TileParser {
         tileBits = getNecessayBits(maxTiles);
         tileMask = (int) Math.pow(2, tileBits) - 1;
         atlasBits = getNecessayBits(numAtlases);
-        atlasMask = ((int) Math.pow(2 , atlasBits) - 1) << tileBits;
+        atlasMask = ((int) Math.pow(2, atlasBits) - 1) << tileBits;
         formatString = "%" + (tileBits + atlasBits) + "s";
     }
 
@@ -56,7 +65,7 @@ public class TileParser {
     public Tile getTile(int code) {
         int tileAtlasIndex = (code & atlasMask) >> tileBits; // Bitwise and to get tileAtlasIndex from code
         int tileIndex = code & tileMask; // Bitwise and to get tileIndex from code
-        
+
         if (tileAtlasIndex == invalidAtlasIndex || tileIndex == invalidTileIndex) {
             return null;
         }
@@ -68,4 +77,5 @@ public class TileParser {
     public TileAtlas[] getTileAtlases() {
         return tileAtlases;
     }
+
 }

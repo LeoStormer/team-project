@@ -3,6 +3,7 @@ package com.query;
 import java.util.HashSet;
 
 public class Cell {
+
     private HashSet<Collider> colliders;
 
     public Cell() {
@@ -20,4 +21,5 @@ public class Cell {
     public void collect(HashSet<Collider> s) {
         s.addAll(colliders);
     }
+
 }

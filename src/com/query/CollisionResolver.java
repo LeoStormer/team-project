@@ -3,6 +3,7 @@ package com.query;
 import com.util.EMath;
 
 public class CollisionResolver {
+
     public static Vector2[] resolveCollision(Vector2 rect1Min, Vector2 rect1Size, boolean rect1Anchored,
             Vector2 rect2Min, Vector2 rect2Size, boolean rect2Anchored) {
         Vector2 rect1Max = rect1Min.add(rect1Size);
@@ -20,7 +21,7 @@ public class CollisionResolver {
         normal = Vector2.dotProduct(displacement, normal) > 0 ? normal.scale(-1) : normal;
         double rect1ResolutionFactor = rect1Anchored ? 0.0d : rect2Anchored ? 1.0d : 0.5d;
         double rect2ResolutionFactor = rect2Anchored ? 0.0d : rect1Anchored ? 1.0d : 0.5d;
-        
+
         Vector2[] positions = { rect1Min.add(normal.scale(depth * rect1ResolutionFactor)),
                 rect2Min.add(normal.scale(-depth * rect2ResolutionFactor)) };
 
@@ -78,4 +79,5 @@ public class CollisionResolver {
 
         return positions;
     }
+
 }

@@ -7,11 +7,13 @@ import com.query.Vector2;
 
 /**
  * This class wraps around a Tile and allows it to be given specific data.
- * Instances of this class can be given specific data such as a position, size, zIndex, and etc.
- * The wrapped tile will be rendered with these attributes without altering the original tile.
+ * Instances of this class can be given specific data such as a position, size,
+ * zIndex, and etc.
+ * The wrapped tile will be rendered with these attributes without altering the
+ * original tile.
  */
 public class TileWrapper extends Renderable {
-    
+
     public int x, y;
     public int width, height;
     private Tile tile;
@@ -24,7 +26,7 @@ public class TileWrapper extends Renderable {
     public TileWrapper(Tile tile, int x, int y, int tileSize) {
         this(tile, x, y, tileSize, tileSize);
     }
-    
+
     public TileWrapper(Tile tile, int x, int y, int width, int height) {
         this.tile = tile;
         this.width = width;
@@ -35,7 +37,6 @@ public class TileWrapper extends Renderable {
         setyIndex(y + height);
     }
 
-    
     @Override
     public boolean shouldDraw(Camera cam) {
         return cam.intersects(border);
@@ -114,4 +115,5 @@ public class TileWrapper extends Renderable {
     public void setTile(Tile tile) {
         this.tile = tile;
     }
+
 }

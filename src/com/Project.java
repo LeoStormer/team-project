@@ -17,15 +17,23 @@ import com.rendering.Renderer;
 import com.tilemap.TileParser;
 
 public class Project extends Game {
+
 	private static final long serialVersionUID = 1L;
+
 	public static final int TILE_SIZE = 32;
 
 	private Physics physics;
+
 	private Renderer renderer;
+
 	private Camera cam;
+
 	private double cameraMoveX = 0;
+
 	private double cameraMoveY = 0;
+
 	private double speed = 300;
+
 	private Rect testRect;
 
 	public Project() {

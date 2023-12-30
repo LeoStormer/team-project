@@ -1,4 +1,5 @@
 package com;
+
 import javax.swing.JFrame;
 
 public class Main {
@@ -9,9 +10,9 @@ public class Main {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setTitle("Team Project");
 		Project project = new Project();
+
 		window.add(project);
 		window.pack();
-		
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 	}

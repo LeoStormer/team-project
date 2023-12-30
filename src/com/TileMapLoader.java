@@ -12,7 +12,9 @@ import com.tilemap.TileMap;
 import com.tilemap.TileParser;
 
 public final class TileMapLoader {
+
     private TileMap tileMap;
+
     private int tileSize;
 
     public TileMapLoader(String filePath, TileParser tileParser, int tileSize) {
@@ -23,7 +25,8 @@ public final class TileMapLoader {
 
     public Physics parseCollisionLayer() {
         // naive implementation
-        // Loop through the collision layer and create a tileSize x tileSize Rect on the collidable tiles
+        // Loop through the collision layer and create a tileSize x tileSize Rect on the
+        // collidable tiles
         double worldWidth = tileMap.numTilesX * tileSize;
         double worldHeight = tileMap.numTilesY * tileSize;
         Physics physics = new Physics(1 / 60.0d, worldWidth, worldHeight, 128);
@@ -39,7 +42,7 @@ public final class TileMapLoader {
                 physics.addCollider(wall);
             }
         }
-        
+
         // Better implementation
         // Perform Greedy Mesh on the collisionLayer
 
@@ -53,4 +56,5 @@ public final class TileMapLoader {
             renderer.add(layer, tileSize, layerIndex - 1);
         }
     }
+
 }

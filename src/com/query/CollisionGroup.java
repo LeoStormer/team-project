@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 // Allows colliders to be selectively collidable.
 public class CollisionGroup {
+
     private static ArrayList<CollisionGroup> groups = new ArrayList<CollisionGroup>();
     private static int groupIdCounter = 0;
     public static final CollisionGroup DEFAULT = new CollisionGroup("Default");
-    
+
     public final int groupId;
     public String name;
     private ArrayList<Boolean> collidable;
@@ -27,7 +28,7 @@ public class CollisionGroup {
         for (CollisionGroup group : groups) {
             group.collidable.add(true);
         }
-        
+
         groups.add(this);
     }
 
@@ -39,4 +40,5 @@ public class CollisionGroup {
     public boolean canCollide(CollisionGroup collisionGroup) {
         return collidable.get(collisionGroup.groupId);
     }
+
 }
