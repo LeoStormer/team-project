@@ -8,11 +8,12 @@ import com.rendering.Animation.Frame;
  * A class that handles the playback of {@link Animation Animations}
  */
 public class Animator extends Renderable {
+
     private Animation animation;
     private double accumulator;
     private int currentFrameIndex;
     private int numFrames;
-    
+
     public boolean playing;
 
     @Override
@@ -40,7 +41,8 @@ public class Animator extends Renderable {
     }
 
     /**
-     * Loads an {@link Animation} then plays it. 
+     * Loads an {@link Animation} then plays it.
+     * 
      * @param animation
      */
     public void play(Animation animation) {
@@ -66,10 +68,10 @@ public class Animator extends Renderable {
 
         Frame currentFrame = animation.getFrame(currentFrameIndex);
         accumulator += deltaTime;
-        
-        if (accumulator < currentFrame.delay){
+
+        if (accumulator < currentFrame.delay) {
             return;
-        } else if (!animation.looped && currentFrameIndex == numFrames - 1){
+        } else if (!animation.looped && currentFrameIndex == numFrames - 1) {
             pause();
             return;
         }
@@ -92,7 +94,7 @@ public class Animator extends Renderable {
      */
     @Override
     public void draw(Graphics g, int x, int y) {
-        if (animation == null){
+        if (animation == null) {
             return;
         }
         getCurrentFrame().draw(g, x, y);
@@ -103,7 +105,8 @@ public class Animator extends Renderable {
         if (animation == null) {
             return;
         }
-        getCurrentFrame().draw(g, x, y, w, h);;
+        getCurrentFrame().draw(g, x, y, w, h);
+        ;
     }
 
     public boolean isPlaying() {
@@ -113,5 +116,5 @@ public class Animator extends Renderable {
     public void setPlaying(boolean playing) {
         this.playing = playing;
     }
-    
+
 }

@@ -9,30 +9,30 @@ import javax.swing.event.MouseInputListener;
 
 import com.query.Vector2;
 
-public class InputReader implements KeyListener, MouseInputListener{
+public class InputReader implements KeyListener, MouseInputListener {
 
 	private boolean[] keyboard;
 	private boolean[] mouseButtons;
 	private Vector2 mouseLocation;
-	
+
 	public InputReader() {
 		keyboard = new boolean[KeyEvent.KEY_LAST + 1];
 		mouseButtons = new boolean[MouseInfo.getNumberOfButtons()];
 		mouseLocation = new Vector2();
 	}
-	
+
 	public boolean isKeyPressed(int keyCode) {
 		return keyboard[keyCode];
 	}
-	
+
 	public boolean isMouseButtonPressed(int mouseButton) {
 		return mouseButtons[mouseButton];
 	}
-	
+
 	public Vector2 getMouseLocation() {
 		return mouseLocation;
 	}
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseButtons[e.getButton()] = true;
@@ -64,14 +64,19 @@ public class InputReader implements KeyListener, MouseInputListener{
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {}
+	public void mouseEntered(MouseEvent e) {
+	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {}
+	public void keyTyped(KeyEvent e) {
+	}
+
 }

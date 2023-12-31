@@ -29,4 +29,5 @@ public class CollisionDetector {
 
         return squaredDistance <= radius * radius;
     }
+
 }

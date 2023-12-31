@@ -1,6 +1,7 @@
 package com.query;
 
 public class Rect extends Collider {
+
 	public Rect() {
 		this(0, 0, 100, 100);
 	}
@@ -9,4 +10,5 @@ public class Rect extends Collider {
 		super(x, y, w, h);
 		setType(Type.Rect);
 	}
+
 }

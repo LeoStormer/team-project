@@ -2,14 +2,17 @@ package com.rendering;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
 
 /**
  * A class that represents an image for the rendering engine.
  */
 public class Tile implements Drawable {
+    
     /**
      * The image this tile represents.
      */
@@ -27,6 +30,7 @@ public class Tile implements Drawable {
 
     /**
      * Creates a Tile from the give file path.
+     * 
      * @param filePath the path to an image file
      * @throws IOException if an I/O error occurs.
      */
@@ -36,6 +40,7 @@ public class Tile implements Drawable {
 
     /**
      * Creates a Tile from the given image.
+     * 
      * @param image
      */
     public Tile(BufferedImage image) {
@@ -48,13 +53,13 @@ public class Tile implements Drawable {
     public void draw(Graphics g, Camera cam) {
         draw(g, 0, 0);
     }
-    
+
     public void draw(Graphics g, int x, int y) {
         g.drawImage(image, x, y, null);
     }
 
     public void draw(Graphics g, int x, int y, int w, int h) {
-        g.drawImage(image, x, y, w, h,null);
+        g.drawImage(image, x, y, w, h, null);
     }
 
     /**

@@ -1,13 +1,16 @@
 package com.query;
 
 import java.awt.Graphics;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import com.rendering.Camera;
 import com.rendering.Drawable;
 
 public class Physics implements Drawable {
+
     public ArrayList<Collider> colliders;
     public HashMap<Collider, MovementInfo> movementInfo;
     public Grid grid;
@@ -47,11 +50,13 @@ public class Physics implements Drawable {
         this.grid = new Grid(0, 0, (int) worldWidth, (int) worldHeight, gridCellSize);
         this.fixedUpdateInterval = fixedUpdateInterval;
     }
-    
-    public Physics(double fixedUpdateInterval, double worldCenterX, double worldCenterY, double worldWidth, double worldHeight, int gridCellSize) {
+
+    public Physics(double fixedUpdateInterval, double worldCenterX, double worldCenterY, double worldWidth,
+            double worldHeight, int gridCellSize) {
         this.colliders = new ArrayList<>();
         this.movementInfo = new HashMap<>();
-        this.grid = new Grid((int) (worldCenterX - worldWidth * 0.5d), (int) (worldCenterY - worldHeight * 0.5d), (int) worldWidth, (int) worldHeight, gridCellSize);
+        this.grid = new Grid((int) (worldCenterX - worldWidth * 0.5d), (int) (worldCenterY - worldHeight * 0.5d),
+                (int) worldWidth, (int) worldHeight, gridCellSize);
         this.fixedUpdateInterval = fixedUpdateInterval;
     }
 
@@ -63,7 +68,7 @@ public class Physics implements Drawable {
 
     public void addColliders(Collider[] colliderCollection) {
         for (Collider collider : colliderCollection) {
-            addCollider(collider);;
+            addCollider(collider);
         }
     }
 
@@ -81,20 +86,23 @@ public class Physics implements Drawable {
         }
     }
 
-
     public void fixedUpdate(double deltaTime) {
         collisionEntries = new ArrayList<>(colliders.size());
 
-        for (Collider collider: colliders) {
+        for (Collider collider : colliders) {
             // Update collider's position
-            Vector2 velocity = collider.anchored ? Vector2.ZERO : collider.getVelocity().scale(deltaTime);
+            if (collider.anchored) {
+                continue;
+            }
+
+            Vector2 velocity = collider.getVelocity().scale(deltaTime);// collider.anchored ? Vector2.ZERO :
+                                                                       // collider.getVelocity().scale(deltaTime);
             MovementInfo info = movementInfo.get(collider);
             Vector2 oldPosition = info.oldPosition;
             Vector2 newPosition = collider.getPosition().add(velocity);
             collider.setPosition(newPosition);
             Vector2 displacement = newPosition.subtract(oldPosition);
-            
-            
+
             // Get bounding box that encompasses collider at current and previous position.
             Vector2 colliderSize = collider.getSize();
             double displacementX = displacement.getX();
@@ -116,27 +124,38 @@ public class Physics implements Drawable {
         }
 
         // Do narrow phase to determine actual collisions.
-        for (CollisionEntry entry: collisionEntries) {
-            for (Collider c: entry.collisions) {
-                if (c == entry.collider || !c.collisionGroup.canCollide(entry.collider.collisionGroup) || !entry.collider.intersects(c)) {
+        for (CollisionEntry entry : collisionEntries) {
+            Vector2 position = entry.collider.getPosition();
+            Vector2 displacement = position.subtract(movementInfo.get(entry.collider).oldPosition);
+
+            Arrays.sort(entry.collisions, (Collider c1, Collider c2) -> {
+                double squareMag1 = Vector2.dotProduct(displacement, c1.getPosition().subtract(position));
+                double squareMmag2 = Vector2.dotProduct(displacement, c2.getPosition().subtract(position));
+                return Double.compare(squareMag1, squareMmag2);
+            });
+
+            for (Collider c : entry.collisions) {
+                if (c == entry.collider || !c.collisionGroup.canCollide(entry.collider.collisionGroup)
+                        || !entry.collider.intersects(c)) {
                     continue;
                 }
-                
+
                 entry.collider.resolveCollision(c);
             }
         }
-        
+
         // Update record of collider's position.
         for (Collider collider : colliders) {
-            movementInfo.get(collider).setOldPosition(collider.getPosition());;
+            movementInfo.get(collider).setOldPosition(collider.getPosition());
             grid.update(collider);
-        }   
+        }
     }
 
     @Override
     public void draw(Graphics g, Camera cam) {
-        for (Collider collider: grid.query(cam)) {
+        for (Collider collider : grid.query(cam)) {
             collider.draw(g, cam);
         }
     }
+
 }

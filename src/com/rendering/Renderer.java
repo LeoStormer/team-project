@@ -8,16 +8,19 @@ import java.util.Comparator;
 import com.tilemap.TileLayer;
 
 public class Renderer implements Drawable {
+
     public Camera camera;
-    ArrayList<Renderable> renderables;
+
+    private ArrayList<Renderable> renderables;
 
     Comparator<Renderable> renderableSorter = new Comparator<Renderable>() {
+
         @Override
         public int compare(Renderable r1, Renderable r2) {
             int zCompare = Integer.compare(r1.zIndex, r2.zIndex);
             return zCompare != 0 ? zCompare : Double.compare(r1.yIndex, r2.yIndex);
         }
-        
+
     };
 
     public Renderer(Camera camera) {

@@ -9,6 +9,7 @@ import com.rendering.Drawable;
 import com.util.EMath;
 
 public class Grid implements Drawable {
+
     private int x, y;
     private int numCellsX, numCellsY;
     private int cellSize;
@@ -19,10 +20,10 @@ public class Grid implements Drawable {
         this.numCellsX = width / cellSize;
         this.numCellsY = height / cellSize;
         this.cellSize = cellSize;
-        this.colliderMap = new HashMap<>(); 
+        this.colliderMap = new HashMap<>();
         this.x = x;
         this.y = y;
-        
+
         cells = new Cell[this.numCellsX][this.numCellsY];
         for (int i = 0; i < this.numCellsX; i++) {
             for (int j = 0; j < this.numCellsY; j++) {
@@ -57,7 +58,7 @@ public class Grid implements Drawable {
 
         Vector2 rectMin = collider.getPosition();
         Vector2 rectMax = rectMin.add(collider.getSize());
-        
+
         CellLocation startCell = getCellLocation(rectMin);
         CellLocation endCell = getCellLocation(rectMax);
 
@@ -92,7 +93,7 @@ public class Grid implements Drawable {
 
     public Collider[] query(Rect rect) {
         Vector2 rectMin = rect.getPosition();
-        
+
         CellLocation startCellLocation = getCellLocation(rectMin);
         CellLocation endCellLocation = getCellLocation(rectMin.add(rect.getSize()));
 
@@ -103,7 +104,7 @@ public class Grid implements Drawable {
                 cell.collect(found);
             }
         }
-        
+
         return found.toArray(new Collider[found.size()]);
     }
 
@@ -112,7 +113,7 @@ public class Grid implements Drawable {
         int offsetY = py - y;
         int cellX = EMath.clamp(Math.floorDiv(offsetX, cellSize), 0, this.numCellsX - 1);
         int cellY = EMath.clamp(Math.floorDiv(offsetY, cellSize), 0, this.numCellsY - 1);
-        
+
         return new CellLocation(cellX, cellY);
     }
 
@@ -127,7 +128,7 @@ public class Grid implements Drawable {
         CellLocation maxCell = getCellLocation(camMax);
         int camLeft = (int) camMin.getX();
         int camTop = (int) camMin.getY();
-        
+
         for (int i = minCell.x; i < maxCell.x + 1; i++) {
             int screenX = x + i * cellSize - camLeft;
             for (int j = minCell.y; j < maxCell.y + 1; j++) {
@@ -136,4 +137,5 @@ public class Grid implements Drawable {
             }
         }
     }
+
 }

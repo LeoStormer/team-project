@@ -8,7 +8,7 @@ import com.query.Rect;
 import com.query.Vector2;
 
 public class Camera extends Rect implements ComponentListener {
-	
+
 	public Camera(double w, double h) {
 		super(0, 0, w, h);
 	}
@@ -44,11 +44,15 @@ public class Camera extends Rect implements ComponentListener {
 	}
 
 	@Override
-	public void componentMoved(ComponentEvent e) {}
+	public void componentMoved(ComponentEvent e) {
+	}
 
 	@Override
-	public void componentShown(ComponentEvent e) {}
+	public void componentShown(ComponentEvent e) {
+	}
 
 	@Override
-	public void componentHidden(ComponentEvent e) {}
+	public void componentHidden(ComponentEvent e) {
+	}
+
 }
