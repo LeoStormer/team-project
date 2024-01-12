@@ -32,6 +32,8 @@ public abstract class Collider implements Drawable {
         collisionGroup = CollisionGroup.DEFAULT;
     }
 
+    public abstract Vector2 closestPoint(Collider other);
+
     public boolean intersects(Collider other) {
         if (this.type == Type.Rect && other.type == Type.Rect) {
             return CollisionDetector.intersects(this.getPosition(), this.getSize(), other.getPosition(),
