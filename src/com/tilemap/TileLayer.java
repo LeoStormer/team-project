@@ -8,8 +8,6 @@ public class TileLayer extends Layer {
 
     private TileParser tileParser;
 
-    public int type = 0;
-
     public TileLayer(int numRows, int numCols, TileParser tileParser) {
         super(numRows, numCols);
         this.tileParser = tileParser;

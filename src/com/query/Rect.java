@@ -10,31 +10,13 @@ public class Rect extends Collider {
 
 	public Rect(double x, double y, double w, double h) {
 		super(x, y, w, h);
-		setType(Type.Rect);
 	}
 
 	@Override
-	public Vector2 closestPoint(Collider other) {
-		if (other instanceof Circle) {
-			return closestPoint((Circle) other);
-		} else {
-			return closestPoint((Rect) other);
-		}
-	}
-
-	public Vector2 closestPoint(Circle circle) {
-		Vector2 center = getCenter();
-		double radius = circle.getSize().getX() * 0.5;
-		Vector2 circleCenter = circle.getPosition().add(radius, radius);
-		Vector2 direction = center.subtract(circleCenter).getNormal();
-
-		return circleCenter.add(direction.scale(radius));
-	}
-
-	public Vector2 closestPoint(Rect other) {
-		Vector2 min = other.getPosition();
-		Vector2 max = min.add(other.getSize());
-		Vector2 clamped = EMath.clamp(getCenter(), min, max);
+	public Vector2 closestPointOnPerimeter(Vector2 position) {
+		Vector2 min = getPosition();
+		Vector2 max = min.add(getSize());
+		Vector2 clamped = EMath.clamp(position, min, max);
 
 		Vector2 d1 = clamped.subtract(min);
 		Vector2 d2 = max.subtract(clamped);
@@ -49,6 +31,34 @@ public class Rect extends Collider {
 				dy < dx ? y : clamped.getY());
 
 		return boundaryPoint;
+	}
+
+	@Override
+	public boolean intersects(Circle other) {
+		double radius = other.getSize().getX() * 0.5d;
+		Vector2 center = other.getPosition().add(radius, radius);
+		return CollisionDetector.intersects(getPosition(), getSize(), center, radius);
+	}
+
+	@Override
+	public boolean intersects(Rect other) {
+		return CollisionDetector.intersects(getPosition(), getSize(), other.getPosition(), other.getSize());
+	}
+
+	@Override
+	public void resolveCollision(Rect other) {
+		Vector2[] newPositions = CollisionResolver.resolveCollision(getPosition(), getSize(), isAnchored(),
+				other.getPosition(), other.getSize(), other.isAnchored());
+		setPosition(newPositions[0]);
+		other.setPosition(newPositions[1]);
+	}
+
+	@Override
+	public void resolveCollision(Circle other) {
+		Vector2[] newPositions = CollisionResolver.resolveCollision(getPosition(), getSize(), isAnchored(),
+				other.getPosition(), other.getSize().getX() * 0.5, other.isAnchored());
+		setPosition(newPositions[0]);
+		other.setPosition(newPositions[1]);
 	}
 
 }

@@ -9,14 +9,23 @@ import java.util.HashMap;
 import com.rendering.Camera;
 import com.rendering.Drawable;
 
+/**
+ * This class simulation of physics, as well as the detection and resolution of
+ * collisions for {@link Collider colliders}.
+ */
 public class Physics implements Drawable {
 
-    public ArrayList<Collider> colliders;
-    public HashMap<Collider, MovementInfo> movementInfo;
-    public Grid grid;
+    private ArrayList<Collider> colliders;
+
+    private HashMap<Collider, MovementInfo> movementInfo;
+
+    private Grid grid;
+
     private double fixedUpdateInterval;
+
     private double accumulator = 0;
-    ArrayList<CollisionEntry> collisionEntries;
+
+    private ArrayList<CollisionEntry> collisionEntries;
 
     private class CollisionEntry {
         public Collider collider;
@@ -44,6 +53,17 @@ public class Physics implements Drawable {
         }
     }
 
+    /**
+     * Construct a rectangular physical area of size (worldWidth, worldHeight) with
+     * its top left corner at (0,0) where Colliders will be physically simulated.
+     * This area is then divided into equal portions that are of size (gridCellSize,
+     * gridCellSize). Collider behavior outside of this area is undefined.
+     * 
+     * @param fixedUpdateInterval the fixed time interval between updates
+     * @param worldWidth
+     * @param worldHeight
+     * @param gridCellSize
+     */
     public Physics(double fixedUpdateInterval, double worldWidth, double worldHeight, int gridCellSize) {
         this.colliders = new ArrayList<>();
         this.movementInfo = new HashMap<>();
@@ -51,6 +71,20 @@ public class Physics implements Drawable {
         this.fixedUpdateInterval = fixedUpdateInterval;
     }
 
+    /**
+     * Construct a rectangular physical area of size (worldWidth, worldHeight) with
+     * its center at (worldCenterX, worldCenterY) where Colliders will be physically
+     * simulated. This area is then divided into equal portions that are of size
+     * (gridCellSize, gridCellSize). Collider behavior outside of this area is
+     * undefined.
+     * 
+     * @param fixedUpdateInterval the fixed time interval between updates
+     * @param worldCenterX
+     * @param worldCenterY
+     * @param worldWidth
+     * @param worldHeight
+     * @param gridCellSize
+     */
     public Physics(double fixedUpdateInterval, double worldCenterX, double worldCenterY, double worldWidth,
             double worldHeight, int gridCellSize) {
         this.colliders = new ArrayList<>();
@@ -95,8 +129,8 @@ public class Physics implements Drawable {
                 continue;
             }
 
-            Vector2 velocity = collider.getVelocity().scale(deltaTime);// collider.anchored ? Vector2.ZERO :
-                                                                       // collider.getVelocity().scale(deltaTime);
+            Vector2 colliderSize = collider.getSize();
+            Vector2 velocity = collider.getVelocity().scale(deltaTime);
             MovementInfo info = movementInfo.get(collider);
             Vector2 oldPosition = info.oldPosition;
             Vector2 newPosition = collider.getPosition().add(velocity);
@@ -104,7 +138,6 @@ public class Physics implements Drawable {
             Vector2 displacement = newPosition.subtract(oldPosition);
 
             // Get bounding box that encompasses collider at current and previous position.
-            Vector2 colliderSize = collider.getSize();
             double displacementX = displacement.getX();
             double displacementY = displacement.getY();
             double boundsX = oldPosition.getX() + displacementX * 0.5;
@@ -112,6 +145,7 @@ public class Physics implements Drawable {
             double boundsWidth = colliderSize.getX() + Math.abs(displacementX);
             double boundsHeight = colliderSize.getY() + Math.abs(displacementY);
             Rect boundingBox = new Rect(boundsX, boundsY, boundsWidth, boundsHeight);
+            
             // Search the grid for other colliders that are near this bounding box
             CollisionEntry entry = new CollisionEntry(collider, grid.query(boundingBox));
 

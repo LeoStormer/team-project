@@ -3,7 +3,6 @@ package com.query;
 import java.awt.Graphics;
 
 import com.rendering.Camera;
-import com.util.EMath;
 
 public class Circle extends Collider {
 
@@ -13,7 +12,6 @@ public class Circle extends Collider {
 
 	public Circle(double x, double y, double radius) {
 		super(x, y, 2 * radius, 2 * radius);
-		setType(Type.Circle);
 
 	}
 
@@ -21,6 +19,9 @@ public class Circle extends Collider {
 		this(position.getX(), position.getY(), radius);
 	}
 
+	/**
+	 * Draws the circle.
+	 */
 	@Override
 	public void draw(Graphics g, Camera cam) {
 		Vector2 screenPosition = cam.toScreenSpace(position);
@@ -30,40 +31,46 @@ public class Circle extends Collider {
 	}
 
 	@Override
-	public Vector2 closestPoint(Collider other) {
-		if (other instanceof Circle) {
-			return closestPoint((Circle) other);
-		} else {
-			return closestPoint((Rect) other);
-		}
+	public Vector2 closestPointOnPerimeter(Vector2 position) {
+		double radius = getSize().getX() * 0.5d;
+		Vector2 center = getPosition().add(radius, radius);
+		Vector2 direction = position.subtract(center);
+		direction = direction.equals(Vector2.ZERO) ? Vector2.YAXIS : direction.getNormal();
+		return center.add(direction.scale(radius));
 	}
 
-	public Vector2 closestPoint(Circle other) {
-		Vector2 center = getCenter();
+	@Override
+	public boolean intersects(Circle other) {
+		double radius = getSize().getX() * 0.5d;
+		Vector2 center = getPosition().add(radius, radius);
 		double otherRadius = other.getSize().getX() * 0.5;
 		Vector2 otherCenter = other.getPosition().add(otherRadius, otherRadius);
-		Vector2 direction = otherCenter.subtract(center).getNormal();
-		Vector2 pointOnOther = otherCenter.subtract(direction.scale(otherRadius));
-		return pointOnOther;
+		return CollisionDetector.intersects(center, radius, otherCenter, otherRadius);
 	}
 
-	public Vector2 closestPoint(Rect rect) {
-		Vector2 rectMin = rect.getPosition();
-		Vector2 rectMax = rectMin.add(rect.getSize());
-		Vector2 clamped = EMath.clamp(getCenter(), rectMin, rectMax);
-		Vector2 d1 = clamped.subtract(rectMin);
-		Vector2 d2 = rectMax.subtract(clamped);
-		double dx = Math.min(d1.getX(), d2.getX());
-		double dy = Math.min(d1.getY(), d2.getY());
+	@Override
+	public boolean intersects(Rect other) {
+		double radius = getSize().getX() * 0.5d;
+		Vector2 center = getPosition().add(radius, radius);
+		return CollisionDetector.intersects(other.getPosition(), other.getSize(), center, radius);
+	}
 
-		double x = d1.getX() < d2.getX() ? rectMin.getX() : rectMax.getX();
-		double y = d1.getY() < d2.getY() ? rectMin.getY() : rectMax.getY();
+	@Override
+	public void resolveCollision(Circle other) {
+		double radius = getSize().getX() * 0.5d;
+		double otherRadius = other.getSize().getX() * 0.5d;
+		Vector2[] newPositions = CollisionResolver.resolveCollision(getPosition(), radius, isAnchored(),
+				other.getPosition(), otherRadius, other.isAnchored());
+		setPosition(newPositions[0]);
+		other.setPosition(newPositions[1]);
+	}
 
-		Vector2 boundaryPoint = new Vector2(
-				dy < dx ? clamped.getX() : x,
-				dy < dx ? y : clamped.getY());
-
-		return boundaryPoint;
+	@Override
+	public void resolveCollision(Rect other) {
+		Vector2[] newPositions = CollisionResolver.resolveCollision(other.getPosition(), other.getSize(),
+				other.isAnchored(), getPosition(), getSize().getX() * 0.5d, isAnchored());
+		setPosition(newPositions[1]);
+		other.setPosition(newPositions[0]);
 	}
 
 }

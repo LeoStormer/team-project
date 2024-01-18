@@ -130,14 +130,14 @@ public class TileAtlas extends Tile {
 
     /**
      * @param n
-     * @return the nth {@link Tile} of the TileAtlas
+     * @return The nth {@link Tile} of the TileAtlas
      */
     public Tile getTile(int n) {
         return tiles.get(n);
     }
 
     /**
-     * @return the number of tiles the TileAtlas was split into.
+     * @return The number of tiles the TileAtlas was split into.
      */
     public int getNumTiles() {
         return tiles.size();

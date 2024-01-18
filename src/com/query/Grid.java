@@ -8,12 +8,81 @@ import com.rendering.Camera;
 import com.rendering.Drawable;
 import com.util.EMath;
 
+/**
+ * This class partitions a rectangular portion of 2d space into equally sized
+ * portions for the purpose of reducing the time complexity of spatial queries.
+ */
 public class Grid implements Drawable {
 
+    /**
+     * A class that represents a portion of a space.
+     */
+    private class Cell {
+
+        private HashSet<Collider> colliders;
+
+        public Cell() {
+            colliders = new HashSet<>();
+        }
+
+        public void add(Collider c) {
+            colliders.add(c);
+        }
+
+        public void remove(Collider c) {
+            colliders.remove(c);
+        }
+
+        public void collect(HashSet<Collider> s) {
+            s.addAll(colliders);
+        }
+
+    }
+
+    private class CellLocation {
+
+        public int x, y;
+
+        public CellLocation(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public boolean equals(CellLocation other) {
+            return x == other.x && y == other.y;
+        }
+
+    }
+
+    private class Node {
+
+        public CellLocation startCellLocation;
+
+        public CellLocation endCellLocation;
+
+        public Node(CellLocation startLocation, CellLocation endLocation) {
+            this.startCellLocation = startLocation;
+            this.endCellLocation = endLocation;
+        }
+
+        public void setStartCellLocation(CellLocation startCellLocation) {
+            this.startCellLocation = startCellLocation;
+        }
+
+        public void setEndCellLocation(CellLocation endCellLocation) {
+            this.endCellLocation = endCellLocation;
+        }
+
+    }
+
     private int x, y;
+
     private int numCellsX, numCellsY;
+
     private int cellSize;
+
     private HashMap<Collider, Node> colliderMap;
+
     private Cell[][] cells;
 
     public Grid(int x, int y, int width, int height, int cellSize) {
@@ -50,6 +119,11 @@ public class Grid implements Drawable {
         }
     }
 
+    /**
+     * Add a collider to the grid.
+     * 
+     * @param collider
+     */
     public void add(Collider collider) {
         if (colliderMap.containsKey(collider)) {
             update(collider);
@@ -62,12 +136,17 @@ public class Grid implements Drawable {
         CellLocation startCell = getCellLocation(rectMin);
         CellLocation endCell = getCellLocation(rectMax);
 
-        Node node = new Node(collider, startCell, endCell);
+        Node node = new Node(startCell, endCell);
         colliderMap.put(collider, node);
 
         addToCells(collider, startCell, endCell);
     }
 
+    /**
+     * Update the position of a collider within the grid.
+     * 
+     * @param collider
+     */
     public void update(Collider collider) {
         Node node = colliderMap.get(collider);
 
@@ -86,11 +165,21 @@ public class Grid implements Drawable {
         addToCells(collider, startCell, endCell);
     }
 
+    /**
+     * Remove a collider from the grid.
+     * 
+     * @param collider
+     */
     public void remove(Collider collider) {
         Node node = colliderMap.remove(collider);
         removefromCells(collider, node.startCellLocation, node.endCellLocation);
     }
 
+    /**
+     * @param rect
+     * @return An array of all {@link Collider colliders} that are in the same
+     *         portions of space the rect is occupying
+     */
     public Collider[] query(Rect rect) {
         Vector2 rectMin = rect.getPosition();
 
@@ -108,7 +197,7 @@ public class Grid implements Drawable {
         return found.toArray(new Collider[found.size()]);
     }
 
-    public CellLocation getCellLocation(int px, int py) {
+    private CellLocation getCellLocation(int px, int py) {
         int offsetX = px - x;
         int offsetY = py - y;
         int cellX = EMath.clamp(Math.floorDiv(offsetX, cellSize), 0, this.numCellsX - 1);
@@ -117,7 +206,7 @@ public class Grid implements Drawable {
         return new CellLocation(cellX, cellY);
     }
 
-    public CellLocation getCellLocation(Vector2 position) {
+    private CellLocation getCellLocation(Vector2 position) {
         return getCellLocation((int) position.getX(), (int) position.getY());
     }
 

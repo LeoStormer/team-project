@@ -2,8 +2,20 @@ package com.query;
 
 import com.util.EMath;
 
+/**
+ * Helper class that provides methods for resolving collisions.
+ */
 public class CollisionResolver {
 
+    /**
+     * @param rect1Min      top left corner of rect 1
+     * @param rect1Size
+     * @param rect1Anchored
+     * @param rect2Min      top left corner of rect 2
+     * @param rect2Size
+     * @param rect2Anchored
+     * @return An array containing the new positions of rect 1 and rect 2
+     */
     public static Vector2[] resolveCollision(Vector2 rect1Min, Vector2 rect1Size, boolean rect1Anchored,
             Vector2 rect2Min, Vector2 rect2Size, boolean rect2Anchored) {
         Vector2 rect1Max = rect1Min.add(rect1Size);
@@ -28,6 +40,17 @@ public class CollisionResolver {
         return positions;
     }
 
+    /**
+     * @param circle1Min      top left corner of the bounding box encompassing
+     *                        circle 1
+     * @param circle1Radius   radius of circle 1
+     * @param circle1Anchored whether circle 1 can be moved
+     * @param circle2Min      top left corner of the bounding box encompassing
+     *                        circle 2
+     * @param circle2Radius   radius of circle 2
+     * @param circle2Anchored whether circle 2 can be moved
+     * @return An array containing the new positions of circle 1 and circle 2
+     */
     public static Vector2[] resolveCollision(Vector2 circle1Min, double circle1Radius, boolean circle1Anchored,
             Vector2 circle2Min, double circle2Radius, boolean circle2Anchored) {
         Vector2 circle1Center = circle1Min.add(circle1Radius, circle1Radius);
@@ -45,6 +68,16 @@ public class CollisionResolver {
         return positions;
     }
 
+    /**
+     * @param rectMin        top left corner of the rectangle
+     * @param rectSize       size of the rectangle
+     * @param rectAnchored   whether the rectangle can be moved
+     * @param circleMin      top left corner of the bounding box encompassing the
+     *                       circle
+     * @param radius         radius of the circle
+     * @param circleAnchored whether the circle can be moved
+     * @return An array containing the new positions of the rectangle and circle
+     */
     public static Vector2[] resolveCollision(Vector2 rectMin, Vector2 rectSize, boolean rectAnchored,
             Vector2 circleMin, double radius, boolean circleAnchored) {
         Vector2 rectHalfSize = rectSize.scale(0.5d);
