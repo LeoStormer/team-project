@@ -49,8 +49,8 @@ public class Circle extends Collider {
 
 	@Override
 	public void draw(Graphics g, int x, int y, int width, int height) {
-		int radius = Math.min(width, height);
-		g.drawOval(x, y, radius, radius);
+		int diameter = Math.min(width, height);
+		g.drawOval(x, y, diameter, diameter);
 	}
 
 	@Override
