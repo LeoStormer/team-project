@@ -10,10 +10,16 @@ import com.rendering.Animation.Frame;
 public class Animator extends Renderable {
 
     private Animation animation;
+
     private double accumulator;
+
     private int currentFrameIndex;
+
     private int numFrames;
 
+    /**
+     * Whether the animator is currently playing
+     */
     public boolean playing;
 
     @Override
@@ -33,6 +39,11 @@ public class Animator extends Renderable {
         playing = false;
     }
 
+    /**
+     * Loads the input animation.
+     * 
+     * @param animation
+     */
     public void load(Animation animation) {
         this.animation = animation;
         accumulator = 0;
@@ -51,12 +62,15 @@ public class Animator extends Renderable {
     }
 
     /**
-     * Plays an {@link Animation} if one is loaeded.
+     * Starts playback of an {@link Animation} if one is loaeded.
      */
     public void play() {
         playing = animation != null;
     }
 
+    /**
+     * Stops playback of an {@link Animation}.
+     */
     public void pause() {
         playing = false;
     }
@@ -80,18 +94,20 @@ public class Animator extends Renderable {
         currentFrameIndex = (currentFrameIndex + 1) % numFrames;
     }
 
+    /**
+     * @return The currently loaded animation
+     */
     public Animation getAnimation() {
         return animation;
     }
 
+    /**
+     * @return The current frame of the loaeded animation.
+     */
     public Tile getCurrentFrame() {
         return animation.getFrame(currentFrameIndex).tile;
     }
 
-    /**
-     * Draws the current frame of the loaded animation.
-     * {@inheritDoc}
-     */
     @Override
     public void draw(Graphics g, int x, int y) {
         if (animation == null) {
@@ -106,15 +122,13 @@ public class Animator extends Renderable {
             return;
         }
         getCurrentFrame().draw(g, x, y, w, h);
-        ;
     }
 
+    /**
+     * @return whether the animator is currently playing
+     */
     public boolean isPlaying() {
         return playing;
-    }
-
-    public void setPlaying(boolean playing) {
-        this.playing = playing;
     }
 
 }

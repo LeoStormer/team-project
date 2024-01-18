@@ -63,21 +63,21 @@ public class Tile implements Drawable {
     }
 
     /**
-     * @return {@link #image}
+     * @return The image this tile represents
      */
     public BufferedImage getImage() {
         return image;
     }
 
     /**
-     * @return {@link #width}
+     * @return The width of the tile's image.
      */
     public int getWidth() {
         return width;
     }
 
     /**
-     * @return {@link #height}
+     * @return The height of the tile's image
      */
     public int getHeight() {
         return height;
