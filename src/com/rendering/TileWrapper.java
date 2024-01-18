@@ -8,15 +8,17 @@ import com.query.Vector2;
 /**
  * This class wraps around a Tile and allows it to be given specific data.
  * Instances of this class can be given specific data such as a position, size,
- * zIndex, and etc.
- * The wrapped tile will be rendered with these attributes without altering the
- * original tile.
+ * zIndex, and etc. The wrapped tile will be rendered with these attributes
+ * without altering the source tile.
  */
 public class TileWrapper extends Renderable {
 
     public int x, y;
+
     public int width, height;
+
     private Tile tile;
+
     private Rect border;
 
     public TileWrapper(Tile tile, int tileSize) {
@@ -34,12 +36,12 @@ public class TileWrapper extends Renderable {
         this.x = x;
         this.y = y;
         this.border = new Rect(x, y, width, height);
-        setyIndex(y + height);
+        setYIndex(y + height);
     }
 
     @Override
-    public boolean shouldDraw(Camera cam) {
-        return cam.intersects(border);
+    public boolean shouldDraw(Camera camera) {
+        return camera.intersects(border);
     }
 
     @Override
@@ -84,7 +86,7 @@ public class TileWrapper extends Renderable {
     public void setY(int y) {
         this.y = y;
         border.setPosition(x, y);
-        setyIndex(y + getHeight());
+        setYIndex(y + getHeight());
     }
 
     public void setPosition(int x, int y) {

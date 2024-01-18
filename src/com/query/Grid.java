@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import com.rendering.Camera;
-import com.rendering.Drawable;
+
 import com.util.EMath;
 
 /**
  * This class partitions a rectangular portion of 2d space into equally sized
  * portions for the purpose of reducing the time complexity of spatial queries.
  */
-public class Grid implements Drawable {
+public class Grid {
 
     /**
      * A class that represents a portion of a space.

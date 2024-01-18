@@ -14,7 +14,7 @@ public abstract class Collider implements Drawable {
      * The Top left corner of the bounding box encompassing the collider.
      */
     public Vector2 position;
-    
+
     /**
      * The size of the bounding box encompassing the collider.
      */
@@ -36,7 +36,7 @@ public abstract class Collider implements Drawable {
     public CollisionGroup collisionGroup;
 
     /**
-     * Constructs a Collider at position (0,0) with size (100,100).
+     * Constructs a Collider at the origin with width and height of 100.
      */
     protected Collider() {
         this(0, 0, 100, 100);
@@ -44,6 +44,7 @@ public abstract class Collider implements Drawable {
 
     /**
      * Constructs a Collider at position (x,y) with size (w,h)
+     * 
      * @param x
      * @param y
      * @param w
@@ -58,23 +59,21 @@ public abstract class Collider implements Drawable {
     }
 
     /**
-     * 
      * @param position
      * @return The point on this collider's perimeter closest to the input position.
      */
     public abstract Vector2 closestPointOnPerimeter(Vector2 position);
 
     /**
-     * 
      * @param other
-     * @return The point on the other collider's perimeter closest to this collider's center
+     * @return The point on the other collider's perimeter closest to this
+     *         collider's center
      */
     public Vector2 closestPoint(Collider other) {
         return other.closestPointOnPerimeter(getCenter());
     }
 
     /**
-     * 
      * @param other
      * @return Whether this collider is intersecting with the other collider.
      */
@@ -86,12 +85,22 @@ public abstract class Collider implements Drawable {
         }
     }
 
-    public abstract boolean intersects(Rect other);
-
-    public abstract boolean intersects(Circle other);
+    /**
+     * @param rect
+     * @return Whether this collider is intersecting with the rect
+     */
+    public abstract boolean intersects(Rect rect);
 
     /**
-     * Moves both this collider and the other so that they aren't colliding with each other.
+     * @param circle
+     * @return Whether this collider is intersecting with the circle
+     */
+    public abstract boolean intersects(Circle circle);
+
+    /**
+     * Moves both this collider and the other so that they aren't colliding with
+     * each other.
+     * 
      * @param other
      */
     public void resolveCollision(Collider other) {
@@ -102,9 +111,21 @@ public abstract class Collider implements Drawable {
         }
     }
 
-    public abstract void resolveCollision(Rect other);
+    /**
+     * Moves both this collider and the rect so that they aren't colliding with
+     * each other.
+     * 
+     * @param rect
+     */
+    public abstract void resolveCollision(Rect rect);
 
-    public abstract void resolveCollision(Circle other);
+    /**
+     * Moves both this collider and the circle so that they aren't colliding with
+     * each other.
+     * 
+     * @param circle
+     */
+    public abstract void resolveCollision(Circle circle);
 
     /**
      * @return {@link Collider#position}
@@ -114,8 +135,9 @@ public abstract class Collider implements Drawable {
     }
 
     /**
-     * Moves the Collider such that the top left corner of its bounding box is at the new position.
-     * Ignores the {@link Collider#anchored anchored} property.
+     * Moves the Collider such that the top left corner of its bounding box is at
+     * the new position. Ignores the {@link Collider#anchored anchored} property.
+     * 
      * @param newPosition
      */
     public void setPosition(Vector2 newPosition) {
@@ -123,8 +145,9 @@ public abstract class Collider implements Drawable {
     }
 
     /**
-     * Moves the Collider such that the top left corner of its bounding box is at the new position.
-     * Ignores the {@link Collider#anchored anchored} property.
+     * Moves the Collider such that the top left corner of its bounding box is at
+     * the new position. Ignores the {@link Collider#anchored anchored} property.
+     * 
      * @param x the x-coordinate of the new position
      * @param y the y-coordinate of the new position
      */
@@ -199,6 +222,7 @@ public abstract class Collider implements Drawable {
 
     /**
      * Sets the {@link CollisionGroup} this collider belongs to.
+     * 
      * @param collisionGroup
      */
     public void setCollisionGroup(CollisionGroup collisionGroup) {
@@ -206,8 +230,12 @@ public abstract class Collider implements Drawable {
     }
 
     /**
-     * Draws the bounding box that encompasses this collider.
+     * @return The center of this collider.
      */
+    public Vector2 getCenter() {
+        return position.add(size.scale(0.5d));
+    }
+
     @Override
     public void draw(Graphics g, Camera cam) {
         Vector2 screenPosition = cam.toScreenSpace(position);
@@ -216,11 +244,16 @@ public abstract class Collider implements Drawable {
 
     }
 
-    /**
-     * @return The center of this collider.
-     */
-    public Vector2 getCenter() {
-        return position.add(size.scale(0.5d));
+    @Override
+    public void draw(Graphics g, int x, int y) {
+        int w = (int) size.getX();
+        int h = (int) size.getY();
+        g.drawRect(x, y, w, h);
+    }
+
+    @Override
+    public void draw(Graphics g, int x, int y, int width, int height) {
+        g.drawRect(x, y, width, height);
     }
 
 }
