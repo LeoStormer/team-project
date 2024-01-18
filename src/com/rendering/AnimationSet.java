@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class AnimationSet {
 
-    HashMap<String, Animation> animations;
+    private HashMap<String, Animation> animations;
 
     public AnimationSet() {
         super();
