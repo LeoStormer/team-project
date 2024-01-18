@@ -6,28 +6,51 @@ import com.rendering.Camera;
 
 public class Circle extends Collider {
 
+	/**
+	 * Construct a Circle at the origin and a radius of 10.
+	 */
 	public Circle() {
 		this(0, 0, 10);
 	}
 
-	public Circle(double x, double y, double radius) {
-		super(x, y, 2 * radius, 2 * radius);
+	/**
+	 * Contruct a Circle with its center at (x,y) and a radius of r.
+	 * @param x
+	 * @param y
+	 * @param r
+	 */
+	public Circle(double x, double y, double r) {
+		super(x, y, 2 * r, 2 * r);
 
-	}
-
-	public Circle(Vector2 position, double radius) {
-		this(position.getX(), position.getY(), radius);
 	}
 
 	/**
-	 * Draws the circle.
+	 * Construct a Circle with its center at position and a radius of r.
+	 * @param position
+	 * @param r
 	 */
+	public Circle(Vector2 position, double r) {
+		this(position.getX(), position.getY(), r);
+	}
+
 	@Override
 	public void draw(Graphics g, Camera cam) {
 		Vector2 screenPosition = cam.toScreenSpace(position);
 		int diameter = (int) size.getX();
 
 		g.drawOval((int) screenPosition.getX(), (int) screenPosition.getY(), diameter, diameter);
+	}
+
+	@Override
+	public void draw(Graphics g, int x, int y) {
+		int radius = (int) size.getX();
+		g.drawOval(x, y, radius, radius);
+	}
+
+	@Override
+	public void draw(Graphics g, int x, int y, int width, int height) {
+		int diameter = Math.min(width, height);
+		g.drawOval(x, y, diameter, diameter);
 	}
 
 	@Override

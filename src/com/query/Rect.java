@@ -4,10 +4,18 @@ import com.util.EMath;
 
 public class Rect extends Collider {
 
+	/**
+	 * Constructs an axis aligned rectangle at the origin with a width and height of
+	 * 100.
+	 */
 	public Rect() {
 		this(0, 0, 100, 100);
 	}
 
+	/**
+	 * Constructs an axis aligned rectangle at (x,y) with a width of w and height of
+	 * h.
+	 */
 	public Rect(double x, double y, double w, double h) {
 		super(x, y, w, h);
 	}

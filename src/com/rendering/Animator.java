@@ -1,13 +1,11 @@
 package com.rendering;
 
-import java.awt.Graphics;
-
 import com.rendering.Animation.Frame;
 
 /**
  * A class that handles the playback of {@link Animation Animations}
  */
-public class Animator extends Renderable {
+public class Animator {
 
     private Animation animation;
 
@@ -22,16 +20,6 @@ public class Animator extends Renderable {
      */
     public boolean playing;
 
-    @Override
-    public int getHeight() {
-        return animation == null ? 1 : getCurrentFrame().getHeight();
-    }
-
-    @Override
-    public int getWidth() {
-        return animation == null ? 1 : getCurrentFrame().getWidth();
-    }
-
     public Animator() {
         accumulator = 0;
         currentFrameIndex = 0;
@@ -45,6 +33,10 @@ public class Animator extends Renderable {
      * @param animation
      */
     public void load(Animation animation) {
+        if (this.animation == animation && this.animation.looped) {
+            return;
+        }
+
         this.animation = animation;
         accumulator = 0;
         currentFrameIndex = 0;
@@ -75,7 +67,11 @@ public class Animator extends Renderable {
         playing = false;
     }
 
-    @Override
+    /**
+     * Moves along the timeline of the loaded animation. Looping to the start if possible.
+     * 
+     * @param deltaTime the increment to move by
+     */
     public void update(double deltaTime) {
         if (!playing || animation == null)
             return;
@@ -106,22 +102,6 @@ public class Animator extends Renderable {
      */
     public Tile getCurrentFrame() {
         return animation.getFrame(currentFrameIndex).tile;
-    }
-
-    @Override
-    public void draw(Graphics g, int x, int y) {
-        if (animation == null) {
-            return;
-        }
-        getCurrentFrame().draw(g, x, y);
-    }
-
-    @Override
-    public void draw(Graphics g, int x, int y, int w, int h) {
-        if (animation == null) {
-            return;
-        }
-        getCurrentFrame().draw(g, x, y, w, h);
     }
 
     /**

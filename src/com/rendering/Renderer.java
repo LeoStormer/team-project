@@ -7,25 +7,32 @@ import java.util.Comparator;
 
 import com.tilemap.TileLayer;
 
-public class Renderer implements Drawable {
+/**
+ * This class handles the rendering of all drawable objects. Every frame before
+ * being drawn, drawables are checked to see if the camera can see them, if it
+ * can't they aren't drawn. Then all the drawables that passed this check are
+ * then sorted first by ZIndex then by YIndex. They are then drawn in this
+ * order.
+ */
+public class Renderer {
 
     public Camera camera;
 
-    private ArrayList<Renderable> renderables;
+    private ArrayList<Drawable> drawables;
 
-    Comparator<Renderable> renderableSorter = new Comparator<Renderable>() {
+    Comparator<Drawable> drawableSorter = new Comparator<Drawable>() {
 
         @Override
-        public int compare(Renderable r1, Renderable r2) {
-            int zCompare = Integer.compare(r1.zIndex, r2.zIndex);
-            return zCompare != 0 ? zCompare : Double.compare(r1.yIndex, r2.yIndex);
+        public int compare(Drawable r1, Drawable r2) {
+            int zCompare = Integer.compare(r1.getZIndex(), r2.getZIndex());
+            return zCompare != 0 ? zCompare : Double.compare(r1.getYIndex(), r2.getYIndex());
         }
 
     };
 
     public Renderer(Camera camera) {
         this.camera = camera;
-        this.renderables = new ArrayList<>();
+        this.drawables = new ArrayList<>();
     }
 
     public void add(TileLayer layer, int tileSize, int zIndex) {
@@ -39,35 +46,38 @@ public class Renderer implements Drawable {
                 }
 
                 TileWrapper tileWrapper = new TileWrapper(tile, col * tileSize, y, tileSize);
-                tileWrapper.setzIndex(zIndex);
-                tileWrapper.setyIndex(y);
+                tileWrapper.setZIndex(zIndex);
 
                 add(tileWrapper);
             }
         }
     }
 
-    public void add(Renderable renderable) {
-        renderables.add(renderable);
+    public void add(Drawable drawable) {
+        drawables.add(drawable);
     }
 
     public void update(double deltaTime) {
-        for (Renderable renderable : renderables) {
-            renderable.update(deltaTime);
+        for (Drawable drawable : drawables) {
+            drawable.update(deltaTime);
         }
-
-        Collections.sort(renderables, renderableSorter);
     }
 
-    @Override
     public void draw(Graphics g, Camera cam) {
-        for (int i = 0; i < renderables.size(); i++) {
-            Renderable renderable = renderables.get(i);
-            if (!renderable.shouldDraw(cam)) {
+        ArrayList<Drawable> toDraw = new ArrayList<Drawable>();
+
+        for (int i = 0; i < drawables.size(); i++) {
+            Drawable drawable = drawables.get(i);
+            if (!drawable.shouldDraw(cam)) {
                 continue;
             }
 
-            renderable.draw(g, cam);
+            toDraw.add(drawable);
+        }
+
+        Collections.sort(toDraw, drawableSorter);
+        for (int i = 0; i < toDraw.size(); i++) {
+            toDraw.get(i).draw(g, cam);
         }
     }
 

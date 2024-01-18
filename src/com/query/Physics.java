@@ -7,13 +7,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import com.rendering.Camera;
-import com.rendering.Drawable;
 
 /**
  * This class simulation of physics, as well as the detection and resolution of
  * collisions for {@link Collider colliders}.
  */
-public class Physics implements Drawable {
+public class Physics {
 
     private ArrayList<Collider> colliders;
 
@@ -187,7 +186,6 @@ public class Physics implements Drawable {
         }
     }
 
-    @Override
     public void draw(Graphics g, Camera cam) {
         for (Collider collider : grid.query(cam)) {
             collider.draw(g, cam);

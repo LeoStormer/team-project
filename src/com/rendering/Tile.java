@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 /**
  * A class that represents an image for the rendering engine.
  */
-public class Tile implements Drawable {
+public class Tile extends Renderable {
     
     /**
      * The image this tile represents.
@@ -50,14 +50,11 @@ public class Tile implements Drawable {
     }
 
     @Override
-    public void draw(Graphics g, Camera cam) {
-        draw(g, 0, 0);
-    }
-
     public void draw(Graphics g, int x, int y) {
         g.drawImage(image, x, y, null);
     }
 
+    @Override
     public void draw(Graphics g, int x, int y, int w, int h) {
         g.drawImage(image, x, y, w, h, null);
     }
